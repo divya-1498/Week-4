@@ -1,0 +1,24 @@
+testImageIdx = randi([1,3]);
+testCoinImage = imread("testCoinImage"+testImageIdx+".png");
+figure, imshow(testCoinImage)
+
+
+% Threshold image - global threshold
+testCoinMask = imbinarize(testCoinImage);
+
+% Erode mask with disk
+se = strel('disk', 3, 0);
+testCoinMask = imerode(testCoinMask, se);
+
+% Dilate mask with disk
+se = strel('disk', 3, 0);
+testCoinMask = imdilate(testCoinMask, se);
+
+% Fill holes
+testCoinMask = imfill(testCoinMask, 'holes');
+
+% Create masked image.
+maskedImage = testCoinImage;
+maskedImage(~testCoinMask) = 0;
+
+imshow(testCoinMask)
